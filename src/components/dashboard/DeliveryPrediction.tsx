@@ -1,6 +1,16 @@
+import { useEffect, useState } from "react";
+import { getWeatherByCoords } from "@/services/weatherService";
 import { AlertTriangle, CloudSnow, Clock, TrendingUp } from "lucide-react";
 
 const DeliveryPrediction = () => {
+  const [weather, setWeather] = useState<any>(null);
+      useEffect(() => {
+      getWeatherByCoords(16.5062, 80.6480) // Vijayawada
+        .then(setWeather)
+       .catch(console.error);
+   }, []);
+
+
   return (
     <div className="bg-card rounded-lg border border-border p-6 shadow-card h-full">
       <div className="flex items-center justify-between mb-4">
@@ -22,9 +32,17 @@ const DeliveryPrediction = () => {
               <AlertTriangle className="w-4 h-4 text-destructive" />
               <span className="text-sm font-semibold text-destructive">Weather-Based Delay Expected</span>
             </div>
-            <p className="text-sm text-foreground/80 leading-relaxed">
-              Heavy thunderstorms affecting Vijayawada-Guntur route. Expected arrival delayed by <span className="font-semibold text-destructive">24 hours</span>.
-            </p>
+              {weather && (
+    <div className="p-4 rounded-lg bg-red-50 border border-red-200">
+      <p className="font-semibold text-red-600">
+        Weather Alert: {weather.condition}
+      </p>
+      <p className="text-sm text-muted-foreground">
+        {weather.description} · {weather.temperature}°C
+      </p>
+    </div>
+     )}
+
           </div>
         </div>
       </div>
