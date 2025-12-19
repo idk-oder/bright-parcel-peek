@@ -7,13 +7,13 @@ const DashboardHeader = () => {
         <div className="flex items-center justify-between">
           {/* India Post Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md overflow-hidden">
-              <svg viewBox="0 0 100 100" className="w-10 h-10">
-                <circle cx="50" cy="50" r="45" fill="white"/>
-                <circle cx="50" cy="50" r="38" fill="none" stroke="hsl(var(--primary))" strokeWidth="3"/>
-                <path d="M30 50 L45 50 L50 35 L55 50 L70 50 L58 60 L63 75 L50 65 L37 75 L42 60 Z" fill="hsl(var(--primary))"/>
-              </svg>
-            </div>
+          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md overflow-hidden">
+           <img
+             src="/india-post.png"
+             alt="India Post Logo"
+             className="w-10 h-10 object-contain"
+             />
+          </div>
             <div>
               <h1 className="text-lg font-bold text-foreground tracking-tight">India Post</h1>
               <p className="text-xs text-muted-foreground">Smart Parcel Tracking</p>
