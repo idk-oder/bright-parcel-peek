@@ -12,28 +12,28 @@ const steps: ProgressStep[] = [
   {
     id: 1,
     label: "Collected",
-    date: "Dec 17, 2024 • 09:32 AM",
+    date: "Dec 18, 2025 • 09:32 AM",
     icon: <Check className="w-5 h-5" />,
     status: "completed",
   },
   {
     id: 2,
     label: "In Transit",
-    date: "Dec 18, 2024 • 02:15 PM",
+    date: "Dec 19, 2025 • 02:15 PM",
     icon: <Timer className="w-5 h-5" />,
     status: "active",
   },
   {
     id: 3,
     label: "Out for Delivery",
-    date: "Est. Dec 21, 2024",
+    date: "Est. Dec 22, 2025",
     icon: <Package className="w-5 h-5" />,
     status: "pending",
   },
   {
     id: 4,
     label: "Delivered",
-    date: "Est. Dec 21, 2024",
+    date: "Est. Dec 22, 2025",
     icon: <PackageCheck className="w-5 h-5" />,
     status: "pending",
   },
@@ -58,7 +58,7 @@ const DeliveryProgress = () => {
                 ${step.status === "completed" 
                   ? "bg-primary text-primary-foreground shadow-elevated" 
                   : step.status === "active"
-                    ? "bg-tracking-blue-light border-2 border-primary text-primary"
+                    ? "bg-tracking-red-light border-2 border-primary text-primary"
                     : "bg-secondary text-inactive border border-border"
                 }
               `}

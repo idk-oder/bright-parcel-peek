@@ -69,8 +69,8 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         tracking: {
-          blue: "hsl(var(--tracking-blue))",
-          "blue-light": "hsl(var(--tracking-blue-light))",
+          red: "hsl(var(--tracking-red))",
+          "red-light": "hsl(var(--tracking-red-light))",
         },
         inactive: "hsl(var(--inactive))",
         surface: {

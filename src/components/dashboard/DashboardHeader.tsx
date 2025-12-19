@@ -1,18 +1,22 @@
-import { Bell, Settings, Package, User } from "lucide-react";
+import { Bell, Settings, User } from "lucide-react";
 
 const DashboardHeader = () => {
   return (
     <header className="bg-card border-b border-border sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* India Post Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md">
-              <Package className="w-5 h-5 text-primary-foreground" />
+            <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md overflow-hidden">
+              <svg viewBox="0 0 100 100" className="w-10 h-10">
+                <circle cx="50" cy="50" r="45" fill="white"/>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="hsl(var(--primary))" strokeWidth="3"/>
+                <path d="M30 50 L45 50 L50 35 L55 50 L70 50 L58 60 L63 75 L50 65 L37 75 L42 60 Z" fill="hsl(var(--primary))"/>
+              </svg>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-foreground tracking-tight">ParcelTrack</h1>
-              <p className="text-xs text-muted-foreground">Smart Delivery Intelligence</p>
+              <h1 className="text-lg font-bold text-foreground tracking-tight">India Post</h1>
+              <p className="text-xs text-muted-foreground">Smart Parcel Tracking</p>
             </div>
           </div>
           
@@ -20,7 +24,7 @@ const DashboardHeader = () => {
           <div className="hidden md:flex items-center gap-2 bg-secondary px-4 py-2 rounded-full">
             <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
             <span className="text-sm text-muted-foreground">Tracking:</span>
-            <span className="text-sm font-semibold text-foreground">PKG-2024-789456123</span>
+            <span className="text-sm font-semibold text-foreground">EE123456789IN</span>
           </div>
           
           {/* Actions */}
