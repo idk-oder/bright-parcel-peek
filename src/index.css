@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 217 91% 50%;
+    --primary: 0 72% 51%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96%;
@@ -38,13 +38,13 @@
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 217 91% 50%;
+    --ring: 0 72% 51%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --tracking-blue: 217 91% 50%;
-    --tracking-blue-light: 217 91% 95%;
+    --tracking-red: 0 72% 51%;
+    --tracking-red-light: 0 72% 95%;
     --inactive: 215 16% 75%;
     --surface: 210 20% 99%;
     --surface-elevated: 0 0% 100%;
@@ -75,7 +75,7 @@
     --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%;
+    --primary: 0 72% 55%;
     --primary-foreground: 222 47% 6%;
 
     --secondary: 217 32% 17%;
@@ -92,10 +92,10 @@
 
     --border: 217 32% 17%;
     --input: 217 32% 17%;
-    --ring: 217 91% 60%;
+    --ring: 0 72% 55%;
 
-    --tracking-blue: 217 91% 60%;
-    --tracking-blue-light: 217 91% 15%;
+    --tracking-red: 0 72% 55%;
+    --tracking-red-light: 0 72% 15%;
     --inactive: 215 16% 35%;
     --surface: 222 47% 7%;
     --surface-elevated: 222 47% 10%;

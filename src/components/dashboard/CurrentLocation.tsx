@@ -6,7 +6,7 @@ const CurrentLocation = () => {
       <div className="p-6 pb-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-foreground">Current Location</h3>
-          <button className="flex items-center gap-1.5 text-xs text-primary bg-tracking-blue-light px-2.5 py-1.5 rounded-full hover:bg-primary/20 transition-colors">
+          <button className="flex items-center gap-1.5 text-xs text-primary bg-tracking-red-light px-2.5 py-1.5 rounded-full hover:bg-primary/20 transition-colors">
             <Navigation className="w-3.5 h-3.5" />
             <span>Track Live</span>
           </button>
@@ -18,7 +18,7 @@ const CurrentLocation = () => {
             <Truck className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <p className="text-sm font-medium text-foreground">Distribution Center, Chicago</p>
+            <p className="text-sm font-medium text-foreground">Near Vijayawada, Andhra Pradesh</p>
             <p className="text-xs text-muted-foreground">Last updated: 2 minutes ago</p>
           </div>
         </div>
@@ -39,7 +39,7 @@ const CurrentLocation = () => {
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
           {/* Route Path */}
           <path
-            d="M 50 150 Q 100 100, 150 120 T 250 80 T 350 60"
+            d="M 50 150 Q 120 100, 200 100 T 350 60"
             fill="none"
             stroke="hsl(var(--primary))"
             strokeWidth="3"
@@ -49,23 +49,23 @@ const CurrentLocation = () => {
           />
           {/* Completed Route */}
           <path
-            d="M 50 150 Q 100 100, 150 120 T 200 100"
+            d="M 50 150 Q 120 100, 200 100"
             fill="none"
             stroke="hsl(var(--primary))"
             strokeWidth="3"
             strokeLinecap="round"
           />
           
-          {/* Origin Marker */}
+          {/* Origin Marker - Hyderabad */}
           <circle cx="50" cy="150" r="6" fill="hsl(var(--success))" />
           <circle cx="50" cy="150" r="10" fill="hsl(var(--success))" fillOpacity="0.3" />
           
-          {/* Destination Marker */}
-          <circle cx="350" cy="60" r="6" fill="hsl(var(--destructive))" />
-          <circle cx="350" cy="60" r="10" fill="hsl(var(--destructive))" fillOpacity="0.3" />
+          {/* Destination Marker - Guntur */}
+          <circle cx="350" cy="60" r="6" fill="hsl(var(--primary))" />
+          <circle cx="350" cy="60" r="10" fill="hsl(var(--primary))" fillOpacity="0.3" />
         </svg>
         
-        {/* Current Location Pin */}
+        {/* Current Location Pin - Near Vijayawada */}
         <div className="absolute" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -100%)' }}>
           <div className="relative">
             <div className="absolute -inset-2 bg-primary/20 rounded-full animate-ping" />
@@ -78,7 +78,7 @@ const CurrentLocation = () => {
         
         {/* Map Labels */}
         <div className="absolute bottom-3 left-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded text-xs text-muted-foreground">
-          New York → Chicago → Denver
+          Hyderabad → Vijayawada → Guntur
         </div>
       </div>
     </div>

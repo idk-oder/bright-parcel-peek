@@ -23,7 +23,7 @@ const DeliveryPrediction = () => {
               <span className="text-sm font-semibold text-destructive">Weather-Based Delay Expected</span>
             </div>
             <p className="text-sm text-foreground/80 leading-relaxed">
-              Heavy snowstorm and thunderstorms affecting route. Expected arrival delayed by <span className="font-semibold text-destructive">24-48 hours</span>.
+              Heavy thunderstorms affecting Vijayawada-Guntur route. Expected arrival delayed by <span className="font-semibold text-destructive">24 hours</span>.
             </p>
           </div>
         </div>
@@ -36,7 +36,7 @@ const DeliveryPrediction = () => {
             <Clock className="w-4 h-4 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">Original ETA</span>
           </div>
-          <span className="text-sm font-medium text-foreground line-through opacity-60">Dec 19, 2024</span>
+          <span className="text-sm font-medium text-foreground line-through opacity-60">Dec 21, 2025</span>
         </div>
         
         <div className="flex items-center justify-between py-3 border-b border-border">
@@ -44,7 +44,7 @@ const DeliveryPrediction = () => {
             <Clock className="w-4 h-4 text-primary" />
             <span className="text-sm text-muted-foreground">Updated ETA</span>
           </div>
-          <span className="text-sm font-semibold text-primary">Dec 21, 2024</span>
+          <span className="text-sm font-semibold text-primary">Dec 22, 2025</span>
         </div>
         
         <div className="flex items-center justify-between py-3">
