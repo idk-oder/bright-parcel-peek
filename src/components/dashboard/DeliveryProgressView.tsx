@@ -1,4 +1,5 @@
-import { Check, Timer, Package, PackageCheck, CloudRain, Calendar, Plus, ArrowRight, Clock } from "lucide-react";
+import { Check, Timer, Package, PackageCheck, CloudRain, Calendar, Plus, ArrowRight, Clock, Car } from "lucide-react";
+import { useApp } from "@/context/AppContext";
 
 interface TimelineItem {
   id: number;
@@ -10,121 +11,168 @@ interface TimelineItem {
   status: "completed" | "active" | "pending";
 }
 
-const timelineItems: TimelineItem[] = [
-  {
-    id: 1,
-    title: "Package Collected",
-    location: "Hyderabad GPO, Telangana",
-    date: "Dec 18, 2025",
-    time: "09:32 AM",
-    icon: <Check className="w-5 h-5" />,
-    status: "completed",
-  },
-  {
-    id: 2,
-    title: "Departed Origin Facility",
-    location: "Hyderabad Processing Center",
-    date: "Dec 18, 2025",
-    time: "02:45 PM",
-    icon: <Check className="w-5 h-5" />,
-    status: "completed",
-  },
-  {
-    id: 3,
-    title: "In Transit",
-    location: "Hyderabad → Vijayawada Route",
-    date: "Dec 19, 2025",
-    time: "08:00 AM",
-    icon: <Check className="w-5 h-5" />,
-    status: "completed",
-  },
-  {
-    id: 4,
-    title: "Arrived at Vijayawada Hub",
-    location: "Vijayawada Processing Center, AP",
-    date: "Dec 19, 2025",
-    time: "02:15 PM",
-    icon: <Timer className="w-5 h-5" />,
-    status: "active",
-  },
-  {
-    id: 5,
-    title: "Out for Delivery",
-    location: "Guntur Delivery Office, AP",
-    date: "Dec 22, 2025",
-    time: "Est. 09:00 AM",
-    icon: <Package className="w-5 h-5" />,
-    status: "pending",
-  },
-  {
-    id: 6,
-    title: "Delivered",
-    location: "Guntur, Andhra Pradesh",
-    date: "Dec 22, 2025",
-    time: "Est. by EOD",
-    icon: <PackageCheck className="w-5 h-5" />,
-    status: "pending",
-  },
-];
-
 const DeliveryProgressView = () => {
+  const { trackingData, t } = useApp();
+
+  // Generate timeline items from tracking data
+  const getTimelineItems = (): TimelineItem[] => {
+    if (!trackingData) return [];
+
+    const activities = trackingData.activities;
+    const items: TimelineItem[] = activities.map((activity, index) => {
+      const isFirst = index === 0;
+      const isLast = index === activities.length - 1;
+      
+      let status: "completed" | "active" | "pending" = "completed";
+      if (isFirst) status = "active";
+      
+      return {
+        id: activity.id,
+        title: activity.title,
+        location: activity.location,
+        date: activity.date,
+        time: activity.time,
+        icon: isLast ? <Check className="w-5 h-5" /> : 
+              isFirst ? <Timer className="w-5 h-5" /> : 
+              <Check className="w-5 h-5" />,
+        status,
+      };
+    });
+
+    // Add pending delivery steps
+    if (trackingData.status !== "delivered") {
+      items.unshift({
+        id: 0,
+        title: t("out_for_delivery"),
+        location: `${trackingData.destination.city} Delivery Office, ${trackingData.destination.state}`,
+        date: trackingData.finalDeliveryDate,
+        time: "Est. 09:00 AM",
+        icon: <Package className="w-5 h-5" />,
+        status: "pending",
+      });
+      
+      items.unshift({
+        id: -1,
+        title: t("delivered"),
+        location: `${trackingData.destination.city}, ${trackingData.destination.state}`,
+        date: trackingData.finalDeliveryDate,
+        time: "Est. by EOD",
+        icon: <PackageCheck className="w-5 h-5" />,
+        status: "pending",
+      });
+    }
+
+    return items;
+  };
+
+  const timelineItems = getTimelineItems();
+  const hasDelay = trackingData && trackingData.delayHours > 0;
+  const isTrafficDelay = trackingData?.delayReason === "traffic";
+
+  if (!trackingData) {
+    return (
+      <div className="bg-card rounded-lg border border-border p-6 shadow-card">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <Package className="w-16 h-16 text-muted-foreground mb-4" />
+          <p className="text-lg font-medium text-muted-foreground">{t("enter_tracking_id")}</p>
+          <p className="text-sm text-muted-foreground mt-1">Search for a tracking ID to view delivery progress</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Delivery Calculation Summary */}
       <div className="bg-card rounded-lg border border-border p-6 shadow-card">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Delivery Calculation</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">{t("delivery_calculation")}</h3>
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 py-4">
           {/* Original Delivery */}
           <div className="bg-secondary rounded-lg p-4 text-center min-w-[180px]">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">Original Delivery</span>
+              <span className="text-xs text-muted-foreground">{t("original_delivery")}</span>
             </div>
-            <div className="text-xl font-bold text-foreground">21 Dec 2025</div>
+            <div className="text-xl font-bold text-foreground">{trackingData.originalDeliveryDate}</div>
           </div>
           
-          {/* Plus Sign */}
-          <div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center">
-            <Plus className="w-5 h-5 text-warning" />
-          </div>
-          
-          {/* Weather Delay */}
-          <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 text-center min-w-[180px]">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <CloudRain className="w-4 h-4 text-destructive" />
-              <span className="text-xs text-destructive">Delay due to Weather</span>
-            </div>
-            <div className="text-xl font-bold text-destructive">24 Hrs</div>
-          </div>
-          
-          {/* Equals Sign */}
-          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-            <ArrowRight className="w-5 h-5 text-muted-foreground" />
-          </div>
-          
-          {/* Final Delivery */}
-          <div className="bg-primary rounded-lg p-4 text-center min-w-[180px] shadow-elevated">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-primary-foreground" />
-              <span className="text-xs text-primary-foreground/80">Final Delivery</span>
-            </div>
-            <div className="text-xl font-bold text-primary-foreground">22 Dec 2025</div>
-          </div>
+          {hasDelay ? (
+            <>
+              {/* Plus Sign */}
+              <div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center">
+                <Plus className="w-5 h-5 text-warning" />
+              </div>
+              
+              {/* Delay */}
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 text-center min-w-[180px]">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  {isTrafficDelay ? (
+                    <Car className="w-4 h-4 text-destructive" />
+                  ) : (
+                    <CloudRain className="w-4 h-4 text-destructive" />
+                  )}
+                  <span className="text-xs text-destructive">
+                    {isTrafficDelay ? t("delay_traffic") : t("delay_weather")}
+                  </span>
+                </div>
+                <div className="text-xl font-bold text-destructive">{trackingData.delayHours} Hrs</div>
+              </div>
+              
+              {/* Equals Sign */}
+              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                <ArrowRight className="w-5 h-5 text-muted-foreground" />
+              </div>
+              
+              {/* Final Delivery */}
+              <div className="bg-primary rounded-lg p-4 text-center min-w-[180px] shadow-elevated">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Clock className="w-4 h-4 text-primary-foreground" />
+                  <span className="text-xs text-primary-foreground/80">{t("final_delivery")}</span>
+                </div>
+                <div className="text-xl font-bold text-primary-foreground">{trackingData.finalDeliveryDate}</div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Equals Sign */}
+              <div className="w-10 h-10 rounded-full bg-success/20 flex items-center justify-center">
+                <ArrowRight className="w-5 h-5 text-success" />
+              </div>
+              
+              {/* On Time Delivery */}
+              <div className="bg-success rounded-lg p-4 text-center min-w-[180px] shadow-elevated">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Check className="w-4 h-4 text-white" />
+                  <span className="text-xs text-white/80">{t("on_time")}</span>
+                </div>
+                <div className="text-xl font-bold text-white">{trackingData.finalDeliveryDate}</div>
+              </div>
+            </>
+          )}
         </div>
         
-        {/* Weather Notice */}
-        <div className="mt-4 bg-destructive/5 border border-destructive/10 rounded-lg p-3 flex items-center gap-3">
-          <CloudRain className="w-5 h-5 text-destructive flex-shrink-0" />
-          <p className="text-sm text-muted-foreground">
-            Heavy thunderstorms are affecting the Vijayawada-Guntur route. Delivery has been rescheduled for safety.
-          </p>
-        </div>
+        {/* Delay Notice */}
+        {hasDelay && (
+          <div className="mt-4 bg-destructive/5 border border-destructive/10 rounded-lg p-3 flex items-center gap-3">
+            {isTrafficDelay ? (
+              <Car className="w-5 h-5 text-destructive flex-shrink-0" />
+            ) : (
+              <CloudRain className="w-5 h-5 text-destructive flex-shrink-0" />
+            )}
+            <p className="text-sm text-muted-foreground">
+              {isTrafficDelay 
+                ? `Heavy traffic congestion is affecting the ${trackingData.currentLocation.city}-${trackingData.destination.city} route. Delivery has been rescheduled.`
+                : `Severe weather conditions are affecting the ${trackingData.currentLocation.city}-${trackingData.destination.city} route. Delivery has been rescheduled for safety.`
+              }
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Detailed Timeline */}
       <div className="bg-card rounded-lg border border-border p-6 shadow-card">
-        <h3 className="text-lg font-semibold text-foreground mb-6">Detailed Tracking Timeline</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-6">{t("detailed_timeline")}</h3>
         
         <div className="space-y-0">
           {timelineItems.map((item, index) => (
