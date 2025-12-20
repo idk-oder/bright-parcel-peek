@@ -1,6 +1,6 @@
 import { User, Camera, Mail, Phone, MapPin, Edit2, Save, X } from "lucide-react";
 import { useApp } from "@/context/AppContext";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface ProfileViewProps {
   onClose: () => void;
@@ -9,6 +9,9 @@ interface ProfileViewProps {
 const ProfileView = ({ onClose }: ProfileViewProps) => {
   const { t } = useApp();
   const [isEditing, setIsEditing] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [profile, setProfile] = useState({
     name: "Rahul Sharma",
     phone: "+91 98765 43210",
@@ -25,6 +28,32 @@ const ProfileView = ({ onClose }: ProfileViewProps) => {
   const handleCancel = () => {
     setEditedProfile(profile);
     setIsEditing(false);
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please upload an image file');
+        return;
+      }
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -51,16 +80,34 @@ const ProfileView = ({ onClose }: ProfileViewProps) => {
           {/* Profile Photo */}
           <div className="flex flex-col items-center mb-6">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-3xl font-bold text-primary-foreground shadow-lg">
-                {profile.name.charAt(0)}
-              </div>
-              {isEditing && (
-                <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors">
-                  <Camera className="w-4 h-4" />
-                </button>
+              {profileImage ? (
+                <img 
+                  src={profileImage} 
+                  alt="Profile" 
+                  className="w-24 h-24 rounded-full object-cover shadow-lg border-2 border-primary/20"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-3xl font-bold text-primary-foreground shadow-lg">
+                  {profile.name.charAt(0)}
+                </div>
               )}
+              <button 
+                onClick={triggerFileInput}
+                className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors"
+                title="Upload photo"
+              >
+                <Camera className="w-4 h-4" />
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
             </div>
             <p className="mt-3 text-lg font-semibold text-foreground">{profile.name}</p>
+            <p className="text-xs text-muted-foreground mt-1">Click camera icon to upload photo</p>
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
