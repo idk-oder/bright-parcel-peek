@@ -1,14 +1,33 @@
 import { MapPin, Navigation, Truck } from "lucide-react";
+import { useApp } from "@/context/AppContext";
+import OpenStreetMap from "@/components/map/OpenStreetMap";
 
 const CurrentLocation = () => {
+  const { trackingData, t } = useApp();
+
+  // Default values when no tracking data
+  const currentCity = trackingData?.currentLocation.city || "—";
+  const currentState = trackingData?.currentLocation.state || "";
+  const origin = trackingData?.origin.city || "Origin";
+  const destination = trackingData?.destination.city || "Destination";
+  
+  // Map props
+  const mapCenter: [number, number] = trackingData?.currentLocation.coords || [78.9629, 20.5937];
+  const markers = trackingData ? [
+    { coords: trackingData.origin.coords, type: "origin" as const, label: trackingData.origin.city },
+    { coords: trackingData.currentLocation.coords, type: "current" as const, label: trackingData.currentLocation.city },
+    { coords: trackingData.destination.coords, type: "destination" as const, label: trackingData.destination.city },
+  ] : [];
+  const route = trackingData?.route.map(r => r.coords) || [];
+
   return (
     <div className="bg-card rounded-lg border border-border shadow-card h-full overflow-hidden">
       <div className="p-6 pb-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Current Location</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t("current_location")}</h3>
           <button className="flex items-center gap-1.5 text-xs text-primary bg-tracking-red-light px-2.5 py-1.5 rounded-full hover:bg-primary/20 transition-colors">
             <Navigation className="w-3.5 h-3.5" />
-            <span>Track Live</span>
+            <span>{t("track_live")}</span>
           </button>
         </div>
         
@@ -18,68 +37,42 @@ const CurrentLocation = () => {
             <Truck className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <p className="text-sm font-medium text-foreground">Near Vijayawada, Andhra Pradesh</p>
-            <p className="text-xs text-muted-foreground">Last updated: 2 minutes ago</p>
+            <p className="text-sm font-medium text-foreground">
+              {trackingData ? `Near ${currentCity}, ${currentState}` : t("enter_tracking_id")}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {trackingData ? t("last_updated") + ": 2 minutes ago" : "—"}
+            </p>
           </div>
         </div>
       </div>
       
-      {/* Mock Map */}
-      <div className="relative h-48 bg-gradient-to-br from-secondary to-muted">
-        {/* Map Grid Pattern */}
-        <div className="absolute inset-0 opacity-30" style={{
-          backgroundImage: `
-            linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
-            linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px'
-        }} />
-        
-        {/* Mock Route */}
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
-          {/* Route Path */}
-          <path
-            d="M 50 150 Q 120 100, 200 100 T 350 60"
-            fill="none"
-            stroke="hsl(var(--primary))"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeDasharray="8 4"
-            className="opacity-60"
+      {/* Real Map */}
+      <div className="relative h-48">
+        {trackingData ? (
+          <OpenStreetMap
+            center={mapCenter}
+            zoom={7}
+            markers={markers}
+            route={route}
+            className="h-48"
+            compact
           />
-          {/* Completed Route */}
-          <path
-            d="M 50 150 Q 120 100, 200 100"
-            fill="none"
-            stroke="hsl(var(--primary))"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-          
-          {/* Origin Marker - Hyderabad */}
-          <circle cx="50" cy="150" r="6" fill="hsl(var(--success))" />
-          <circle cx="50" cy="150" r="10" fill="hsl(var(--success))" fillOpacity="0.3" />
-          
-          {/* Destination Marker - Guntur */}
-          <circle cx="350" cy="60" r="6" fill="hsl(var(--primary))" />
-          <circle cx="350" cy="60" r="10" fill="hsl(var(--primary))" fillOpacity="0.3" />
-        </svg>
-        
-        {/* Current Location Pin - Near Vijayawada */}
-        <div className="absolute" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -100%)' }}>
-          <div className="relative">
-            <div className="absolute -inset-2 bg-primary/20 rounded-full animate-ping" />
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-lg">
-              <MapPin className="w-4 h-4 text-primary-foreground" />
+        ) : (
+          <div className="h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+            <div className="text-center">
+              <MapPin className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">{t("enter_tracking_id")}</p>
             </div>
-            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-primary" />
           </div>
-        </div>
+        )}
         
         {/* Map Labels */}
-        <div className="absolute bottom-3 left-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded text-xs text-muted-foreground">
-          Hyderabad → Vijayawada → Guntur
-        </div>
+        {trackingData && (
+          <div className="absolute bottom-3 left-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded text-xs text-muted-foreground z-10">
+            {origin} → {currentCity} → {destination}
+          </div>
+        )}
       </div>
     </div>
   );

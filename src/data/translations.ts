@@ -1,5 +1,7 @@
 export type Language = "en" | "hi" | "te";
 
+// Additional translation keys for dynamic data
+
 export const translations: Record<Language, Record<string, string>> = {
   en: {
     // Header

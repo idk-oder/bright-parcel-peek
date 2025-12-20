@@ -34,6 +34,62 @@ export interface TrackingData {
 }
 
 export const trackingDatabase: Record<string, TrackingData> = {
+  // Delay-free examples (shown first)
+  "EE444555666IN": {
+    id: "EE444555666IN",
+    origin: { city: "Kolkata", state: "West Bengal", coords: [88.3639, 22.5726] },
+    destination: { city: "Bhubaneswar", state: "Odisha", coords: [85.8245, 20.2961] },
+    currentLocation: { city: "Bhubaneswar", state: "Odisha", coords: [85.8245, 20.2961] },
+    route: [
+      { city: "Kolkata", state: "West Bengal", coords: [88.3639, 22.5726] },
+      { city: "Bhubaneswar", state: "Odisha", coords: [85.8245, 20.2961] },
+    ],
+    status: "out_for_delivery",
+    originalDeliveryDate: "Dec 20, 2025",
+    delayHours: 0,
+    delayReason: null,
+    finalDeliveryDate: "Dec 20, 2025",
+    distanceRemaining: 5,
+    totalDistance: 440,
+    progressPercent: 98,
+    confidence: 99,
+    collectedDate: "Dec 18, 2025",
+    collectedTime: "08:00 AM",
+    activities: [
+      { id: 1, title: "Out for delivery", location: "Bhubaneswar Local Delivery Office, OD", timestamp: "1 hour ago", date: "Dec 20, 2025", time: "08:30 AM" },
+      { id: 2, title: "Arrived at Bhubaneswar hub", location: "Bhubaneswar Central Hub, Odisha", timestamp: "Yesterday", date: "Dec 19, 2025", time: "06:00 PM" },
+      { id: 3, title: "In transit", location: "NH 16, Odisha", timestamp: "Dec 19, 2025", date: "Dec 19, 2025", time: "10:00 AM" },
+      { id: 4, title: "Package collected from sender", location: "Kolkata GPO, West Bengal", timestamp: "Dec 18, 2025", date: "Dec 18, 2025", time: "08:00 AM" },
+    ],
+  },
+  "EE777888999IN": {
+    id: "EE777888999IN",
+    origin: { city: "Jaipur", state: "Rajasthan", coords: [75.7873, 26.9124] },
+    destination: { city: "Ahmedabad", state: "Gujarat", coords: [72.5714, 23.0225] },
+    currentLocation: { city: "Udaipur", state: "Rajasthan", coords: [73.7125, 24.5854] },
+    route: [
+      { city: "Jaipur", state: "Rajasthan", coords: [75.7873, 26.9124] },
+      { city: "Udaipur", state: "Rajasthan", coords: [73.7125, 24.5854] },
+      { city: "Ahmedabad", state: "Gujarat", coords: [72.5714, 23.0225] },
+    ],
+    status: "in_transit",
+    originalDeliveryDate: "Dec 21, 2025",
+    delayHours: 0,
+    delayReason: null,
+    finalDeliveryDate: "Dec 21, 2025",
+    distanceRemaining: 260,
+    totalDistance: 670,
+    progressPercent: 61,
+    confidence: 94,
+    collectedDate: "Dec 18, 2025",
+    collectedTime: "11:30 AM",
+    activities: [
+      { id: 1, title: "Departed Udaipur facility", location: "Udaipur Processing Center, RJ", timestamp: "2 hours ago", date: "Dec 19, 2025", time: "01:00 PM" },
+      { id: 2, title: "Arrived at Udaipur", location: "Udaipur Hub, Rajasthan", timestamp: "Yesterday", date: "Dec 18, 2025", time: "08:00 PM" },
+      { id: 3, title: "In transit", location: "NH 48, Rajasthan", timestamp: "Dec 18, 2025", date: "Dec 18, 2025", time: "02:00 PM" },
+      { id: 4, title: "Package collected from sender", location: "Jaipur GPO, Rajasthan", timestamp: "Dec 18, 2025", date: "Dec 18, 2025", time: "11:30 AM" },
+    ],
+  },
   "EE123456789IN": {
     id: "EE123456789IN",
     origin: { city: "Hyderabad", state: "Telangana", coords: [78.4772, 17.4065] },
