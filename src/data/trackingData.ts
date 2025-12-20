@@ -34,7 +34,65 @@ export interface TrackingData {
 }
 
 export const trackingDatabase: Record<string, TrackingData> = {
-  // Delay-free examples (shown first)
+  // Weather delay example
+  "EE222333444IN": {
+    id: "EE222333444IN",
+    origin: { city: "Lucknow", state: "Uttar Pradesh", coords: [80.9462, 26.8467] },
+    destination: { city: "Patna", state: "Bihar", coords: [85.1376, 25.5941] },
+    currentLocation: { city: "Varanasi", state: "Uttar Pradesh", coords: [82.9913, 25.3176] },
+    route: [
+      { city: "Lucknow", state: "Uttar Pradesh", coords: [80.9462, 26.8467] },
+      { city: "Varanasi", state: "Uttar Pradesh", coords: [82.9913, 25.3176] },
+      { city: "Patna", state: "Bihar", coords: [85.1376, 25.5941] },
+    ],
+    status: "in_transit",
+    originalDeliveryDate: "Dec 21, 2025",
+    delayHours: 36,
+    delayReason: "weather",
+    finalDeliveryDate: "Dec 23, 2025",
+    distanceRemaining: 240,
+    totalDistance: 530,
+    progressPercent: 55,
+    confidence: 72,
+    collectedDate: "Dec 18, 2025",
+    collectedTime: "10:00 AM",
+    activities: [
+      { id: 1, title: "Weather delay - Heavy fog alert", location: "NH 31, near Varanasi, UP", timestamp: "1 hour ago", date: "Dec 19, 2025", time: "02:00 PM" },
+      { id: 2, title: "Departed Varanasi facility", location: "Varanasi Processing Center, UP", timestamp: "4 hours ago", date: "Dec 19, 2025", time: "11:00 AM" },
+      { id: 3, title: "Arrived at Varanasi", location: "Varanasi Hub, Uttar Pradesh", timestamp: "Yesterday", date: "Dec 18, 2025", time: "09:00 PM" },
+      { id: 4, title: "Package collected from sender", location: "Lucknow GPO, Uttar Pradesh", timestamp: "Dec 18, 2025", date: "Dec 18, 2025", time: "10:00 AM" },
+    ],
+  },
+  // Traffic delay example
+  "EE333444555IN": {
+    id: "EE333444555IN",
+    origin: { city: "Pune", state: "Maharashtra", coords: [73.8567, 18.5204] },
+    destination: { city: "Goa", state: "Goa", coords: [73.8278, 15.4909] },
+    currentLocation: { city: "Kolhapur", state: "Maharashtra", coords: [74.2433, 16.7050] },
+    route: [
+      { city: "Pune", state: "Maharashtra", coords: [73.8567, 18.5204] },
+      { city: "Kolhapur", state: "Maharashtra", coords: [74.2433, 16.7050] },
+      { city: "Goa", state: "Goa", coords: [73.8278, 15.4909] },
+    ],
+    status: "in_transit",
+    originalDeliveryDate: "Dec 20, 2025",
+    delayHours: 24,
+    delayReason: "traffic",
+    finalDeliveryDate: "Dec 21, 2025",
+    distanceRemaining: 150,
+    totalDistance: 450,
+    progressPercent: 67,
+    confidence: 80,
+    collectedDate: "Dec 18, 2025",
+    collectedTime: "09:00 AM",
+    activities: [
+      { id: 1, title: "Heavy traffic congestion reported", location: "NH 48, near Kolhapur, MH", timestamp: "30 mins ago", date: "Dec 19, 2025", time: "02:30 PM" },
+      { id: 2, title: "Departed Kolhapur facility", location: "Kolhapur Processing Center, MH", timestamp: "3 hours ago", date: "Dec 19, 2025", time: "12:00 PM" },
+      { id: 3, title: "Arrived at Kolhapur", location: "Kolhapur Hub, Maharashtra", timestamp: "Yesterday", date: "Dec 18, 2025", time: "07:00 PM" },
+      { id: 4, title: "Package collected from sender", location: "Pune GPO, Maharashtra", timestamp: "Dec 18, 2025", date: "Dec 18, 2025", time: "09:00 AM" },
+    ],
+  },
+  // Delay-free examples
   "EE444555666IN": {
     id: "EE444555666IN",
     origin: { city: "Kolkata", state: "West Bengal", coords: [88.3639, 22.5726] },
